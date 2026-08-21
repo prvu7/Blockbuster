@@ -8,24 +8,22 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="watchlist_items")
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class Watchlist {
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+public class WatchlistItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false, unique = true)
-    private Long userId;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId;
 
-    @Column(name = "tmdb_id", nullable = false, unique = true)
+    @Column(name = "tmdb_id", nullable = false)
     private Long tmdbId;
 
     @CreationTimestamp
+    @Builder.Default
     @Column(name = "added_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
