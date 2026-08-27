@@ -1,4 +1,6 @@
 <div class="p-6">
+  <nav class="p-4"><a routerLink="/search" class="text-blue-600">Search Movies</a></nav>
+  <router-outlet></router-outlet>
   <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
     <p>Welcome, {{ (auth.user$ | async)?.name }}</p>
     <button (click)="logout()" class="bg-red-500 text-white px-4 py-2 rounded">Log out</button>

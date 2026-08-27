@@ -1,0 +1,39 @@
+<div *ngIf="movie" class="p-6 max-w-4xl mx-auto">
+  <div class="flex gap-6">
+    <img *ngIf="movie.poster_path" [src]="imageBase + movie.poster_path" [alt]="movie.title" class="rounded w-48" />
+    <div>
+      <h1 class="text-2xl font-bold">{{ movie.title }}</h1>
+      <p class="text-gray-500 mb-2">{{ movie.release_date }} &middot; {{ movie.runtime }} min</p>
+      <p *ngIf="director" class="text-sm mb-2">Directed by {{ director!.name }}</p>
+      <p class="mb-4">{{ movie.overview }}</p>
+
+      <div class="flex gap-2 mb-4">
+        <button (click)="logMovie()" class="bg-green-600 text-white px-4 py-2 rounded">Log this movie</button>
+        <button (click)="addToWatchlist()" class="bg-gray-600 text-white px-4 py-2 rounded">Add to watchlist</button>
+      </div>
+
+      <div *ngIf="providers.length" class="mb-4">
+        <p class="font-medium text-sm mb-1">Streaming on:</p>
+        <div class="flex gap-2">
+          <img *ngFor="let p of providers" [src]="'https://image.tmdb.org/t/p/w45' + p.logo_path" [alt]="p.provider_name" class="w-8 h-8 rounded" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="trailerKey" class="mt-6 aspect-video max-w-2xl">
+    <iframe class="w-full h-full" [src]="'https://www.youtube.com/embed/' + trailerKey" frameborder="0" allowfullscreen></iframe>
+  </div>
+
+  <div class="mt-6">
+    <h2 class="font-semibold mb-2">Cast</h2>
+    <div class="flex gap-4 overflow-x-auto">
+      <div *ngFor="let actor of movie.credits.cast.slice(0, 10)" class="text-center w-20 flex-shrink-0">
+        <img *ngIf="actor.profile_path" [src]="'https://image.tmdb.org/t/p/w92' + actor.profile_path" class="rounded" />
+        <p class="text-xs mt-1">{{ actor.name }}</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="text-xs text-gray-400 mt-8">This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+</div>

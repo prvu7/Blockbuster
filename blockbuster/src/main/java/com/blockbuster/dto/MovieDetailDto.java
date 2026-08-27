@@ -1,5 +1,6 @@
 package com.blockbuster.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,5 +17,5 @@ public record MovieDetailDto(
         List<GenreDto> genres,
         CreditsDto credits,
         VideosDto videos,
-        @JsonProperty("watch/providers") WatchProvidersDto watchProviders
+        @JsonProperty("watchProviders") @JsonAlias("watch/providers") WatchProvidersDto watchProviders
 ) {}
