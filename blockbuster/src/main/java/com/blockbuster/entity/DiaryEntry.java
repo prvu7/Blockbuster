@@ -18,10 +18,16 @@ public class DiaryEntry {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
 
     @Column(name = "tmdb_id", nullable = false)
     private Long tmdbId;
+
+    @Column(name = "movie_title", nullable = false)
+    private String movieTitle;
+
+    @Column(name = "poster_path", nullable = false)
+    private String posterPath;
 
     @Column(name = "watched_date", nullable = false)
     private LocalDate watchedDate;

@@ -1,13 +1,25 @@
-<div class="p-6">
-  <nav class="p-4"><a routerLink="/search" class="text-blue-600">Search Movies</a></nav>
+<div class="min-h-screen bg-[#141318] text-[#F2F0EC]">
+  <nav class="border-b border-[#2C2A33] px-6 py-4 flex items-center justify-between">
+    <div class="flex gap-6">
+      <a routerLink="/search" routerLinkActive="text-[#D9A441]" class="text-sm font-medium text-[#9B96A3] hover:text-[#F2F0EC] transition-colors">Search</a>
+      <a routerLink="/diary" routerLinkActive="text-[#D9A441]" class="text-sm font-medium text-[#9B96A3] hover:text-[#F2F0EC] transition-colors">My Diary</a>
+      <a routerLink="/watchlist" routerLinkActive="text-[#D9A441]" class="text-sm font-medium text-[#9B96A3] hover:text-[#F2F0EC] transition-colors">Watchlist</a>
+    </div>
+
+    @if (auth.isAuthenticated$ | async) {
+      <div class="flex items-center gap-4">
+        <span class="text-sm text-[#9B96A3]">{{ (auth.user$ | async)?.name }}</span>
+        <button (click)="testSecurePing()" class="text-xs text-[#6E6A76] hover:text-[#9B96A3] transition-colors">Ping</button>
+        <button (click)="logout()" class="text-sm font-medium px-3 py-1.5 rounded-md border border-[#2C2A33] text-[#F2F0EC] hover:bg-[#1E1C24] transition-colors">Log out</button>
+      </div>
+    } @else {
+      <button (click)="login()" class="text-sm font-medium px-4 py-1.5 rounded-md bg-[#D9A441] hover:bg-[#C8933A] text-[#141318] transition-colors">Log in</button>
+    }
+  </nav>
+
+  @if (pingResult) {
+    <p class="px-6 pt-3 text-xs text-[#6E6A76]">{{ pingResult }}</p>
+  }
+
   <router-outlet></router-outlet>
-  <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
-    <p>Welcome, {{ (auth.user$ | async)?.name }}</p>
-    <button (click)="logout()" class="bg-red-500 text-white px-4 py-2 rounded">Log out</button>
-    <button (click)="testSecurePing()" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Test secure endpoint</button>
-    <p class="mt-4">{{ pingResult }}</p>
-  </ng-container>
-  <ng-template #loggedOut>
-    <button (click)="login()" class="bg-green-500 text-white px-4 py-2 rounded">Log in</button>
-  </ng-template>
 </div>

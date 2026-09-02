@@ -1,21 +1,25 @@
 <div class="p-6 max-w-4xl mx-auto">
-  <div class="flex gap-2 mb-6">
+  <div class="flex gap-2 mb-8">
     <input
       [(ngModel)]="query"
       (keyup.enter)="search()"
       placeholder="Search for a movie..."
-      class="border px-4 py-2 rounded flex-1"
+      class="flex-1 bg-[#1E1C24] border border-[#2C2A33] rounded-md px-4 py-2.5 text-[#F2F0EC] placeholder-[#6E6A76] focus:outline-none focus:border-[#D9A441] transition-colors"
     />
-    <button (click)="search()" class="bg-blue-600 text-white px-4 py-2 rounded">Search</button>
+    <button (click)="search()" class="bg-[#D9A441] hover:bg-[#C8933A] text-[#141318] px-5 py-2.5 rounded-md font-medium transition-colors">Search</button>
   </div>
 
-  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-    <a *ngFor="let movie of results" [routerLink]="['/movie', movie.id]" class="block">
-    @if (movie.poster_path) {
-        <img [src]="imageBase + movie.poster_path" [alt]="movie.title" class="rounded w-full" />
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+    @for (movie of results; track movie.id) {
+      <a [routerLink]="['/movie', movie.id]" class="block group">
+        @if (movie.poster_path) {
+          <img [src]="imageBase + movie.poster_path" [alt]="movie.title" class="rounded-md w-full aspect-[2/3] object-cover group-hover:opacity-80 transition-opacity" />
+        } @else {
+          <div class="rounded-md w-full aspect-[2/3] bg-[#1E1C24] flex items-center justify-center text-[#6E6A76] text-xs">No image</div>
+        }
+        <p class="mt-2 text-sm font-medium text-[#F2F0EC] truncate">{{ movie.title }}</p>
+        <p class="text-xs text-[#9B96A3]">{{ movie.release_date | slice:0:4 }}</p>
+      </a>
     }
-      <p class="mt-1 text-sm font-medium">{{ movie.title }}</p>
-      <p class="text-xs text-gray-500">{{ movie.release_date | slice:0:4 }}</p>
-    </a>
   </div>
 </div>

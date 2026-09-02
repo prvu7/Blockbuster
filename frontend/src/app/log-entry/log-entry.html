@@ -1,0 +1,25 @@
+<div class="p-6 max-w-md mx-auto">
+  <h1 class="text-2xl font-semibold tracking-tight mb-6">Log: {{ movieTitle }}</h1>
+
+  <label class="block mb-4">
+    <span class="block text-sm text-[#9B96A3] mb-1">Watched on</span>
+    <input type="date" [(ngModel)]="watchedDate" class="w-full bg-[#1E1C24] border border-[#2C2A33] rounded-md px-3 py-2 text-[#F2F0EC] focus:outline-none focus:border-[#D9A441] transition-colors" />
+  </label>
+
+  <label class="block mb-4">
+    <span class="block text-sm text-[#9B96A3] mb-1">Rating</span>
+    <select [(ngModel)]="rating" class="w-full bg-[#1E1C24] border border-[#2C2A33] rounded-md px-3 py-2 text-[#F2F0EC] focus:outline-none focus:border-[#D9A441] transition-colors">
+      <option [value]="0">No rating</option>
+      @for (r of ratingOptions; track r) {
+        <option [value]="r">{{ r }} ★</option>
+      }
+    </select>
+  </label>
+
+  <label class="block mb-6">
+    <span class="block text-sm text-[#9B96A3] mb-1">Review</span>
+    <textarea [(ngModel)]="reviewText" rows="4" class="w-full bg-[#1E1C24] border border-[#2C2A33] rounded-md px-3 py-2 text-[#F2F0EC] placeholder-[#6E6A76] focus:outline-none focus:border-[#D9A441] transition-colors"></textarea>
+  </label>
+
+  <button (click)="submit()" class="bg-[#D9A441] hover:bg-[#C8933A] text-[#141318] px-5 py-2.5 rounded-md font-medium transition-colors">Save entry</button>
+</div>

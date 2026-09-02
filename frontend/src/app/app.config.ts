@@ -18,7 +18,9 @@ export const appConfig: ApplicationConfig = {
       },
       httpInterceptor: {
         allowedList: [
-          `${environment.apiBaseUrl}/secure-ping`
+          `${environment.apiBaseUrl}/secure-ping`,
+          `${environment.apiBaseUrl}/diary`,
+          `${environment.apiBaseUrl}/diary/*`
         ]
       }
     })

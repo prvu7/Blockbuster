@@ -1,39 +1,64 @@
-<div *ngIf="movie" class="p-6 max-w-4xl mx-auto">
-  <div class="flex gap-6">
-    <img *ngIf="movie.poster_path" [src]="imageBase + movie.poster_path" [alt]="movie.title" class="rounded w-48" />
-    <div>
-      <h1 class="text-2xl font-bold">{{ movie.title }}</h1>
-      <p class="text-gray-500 mb-2">{{ movie.release_date }} &middot; {{ movie.runtime }} min</p>
-      <p *ngIf="director" class="text-sm mb-2">Directed by {{ director!.name }}</p>
-      <p class="mb-4">{{ movie.overview }}</p>
+@if (movie) {
+  @if (loadError) {
+  <div class="p-6 max-w-4xl mx-auto">
+    <p class="text-[#C4675A] text-sm">Couldn't load this movie. Check the backend logs and your TMDB API key, then refresh.</p>
+  </div>
+  }
+  <div class="p-6 max-w-4xl mx-auto">
+    <div class="flex gap-6">
+      @if (movie.poster_path) {
+        <img [src]="imageBase + movie.poster_path" [alt]="movie.title" class="rounded-md w-48 flex-shrink-0" />
+      }
+      <div>
+        <h1 class="text-2xl font-semibold tracking-tight">{{ movie.title }}</h1>
+        <p class="text-[#9B96A3] mb-3 text-sm">{{ movie.release_date }} &middot; {{ movie.runtime }} min</p>
+        @if (director) {
+          <p class="text-sm text-[#9B96A3] mb-3">Directed by {{ director.name }}</p>
+        }
+        <p class="mb-6 text-[#D6D3DA] leading-relaxed">{{ movie.overview }}</p>
 
-      <div class="flex gap-2 mb-4">
-        <button (click)="logMovie()" class="bg-green-600 text-white px-4 py-2 rounded">Log this movie</button>
-        <button (click)="addToWatchlist()" class="bg-gray-600 text-white px-4 py-2 rounded">Add to watchlist</button>
-      </div>
-
-      <div *ngIf="providers.length" class="mb-4">
-        <p class="font-medium text-sm mb-1">Streaming on:</p>
-        <div class="flex gap-2">
-          <img *ngFor="let p of providers" [src]="'https://image.tmdb.org/t/p/w45' + p.logo_path" [alt]="p.provider_name" class="w-8 h-8 rounded" />
+        <div class="flex gap-3 mb-6">
+          <button (click)="logMovie()" class="bg-[#D9A441] hover:bg-[#C8933A] text-[#141318] px-4 py-2 rounded-md font-medium transition-colors">Log this movie</button>
+          <button (click)="addToWatchlist()" [disabled]="addedToWatchlist" class="border border-[#2C2A33] hover:bg-[#1E1C24] text-[#F2F0EC] px-4 py-2 rounded-md font-medium transition-colors disabled:opacity-50 disabled:hover:bg-transparent">
+            {{ addedToWatchlist ? 'Added ✓' : 'Add to watchlist' }}
+          </button>
         </div>
+
+        @if (providers.length) {
+          <div class="mb-6">
+            <p class="font-medium text-sm text-[#9B96A3] mb-2">Streaming on</p>
+            <div class="flex gap-2">
+              @for (p of providers; track p.provider_name) {
+                <img [src]="'https://image.tmdb.org/t/p/w45' + p.logo_path" [alt]="p.provider_name" class="w-8 h-8 rounded-md" />
+              }
+            </div>
+          </div>
+        }
       </div>
     </div>
-  </div>
 
-  <div *ngIf="trailerKey" class="mt-6 aspect-video max-w-2xl">
-    <iframe class="w-full h-full" [src]="'https://www.youtube.com/embed/' + trailerKey" frameborder="0" allowfullscreen></iframe>
-  </div>
+    @if (trailerKey) {
+      <div class="mt-8 aspect-video max-w-2xl rounded-md overflow-hidden">
+        <iframe class="w-full h-full" [src]="'https://www.youtube.com/embed/' + trailerKey" frameborder="0" allowfullscreen></iframe>
+      </div>
+    }
 
-  <div class="mt-6">
-    <h2 class="font-semibold mb-2">Cast</h2>
-    <div class="flex gap-4 overflow-x-auto">
-      <div *ngFor="let actor of movie.credits.cast.slice(0, 10)" class="text-center w-20 flex-shrink-0">
-        <img *ngIf="actor.profile_path" [src]="'https://image.tmdb.org/t/p/w92' + actor.profile_path" class="rounded" />
-        <p class="text-xs mt-1">{{ actor.name }}</p>
+    <div class="mt-8">
+      <h2 class="font-semibold text-lg mb-3">Cast</h2>
+      <div class="flex gap-4 overflow-x-auto pb-2">
+        @for (actor of movie.credits.cast.slice(0, 10); track actor.name) {
+          <div class="text-center w-20 flex-shrink-0">
+            @if (actor.profile_path) {
+              <img [src]="'https://image.tmdb.org/t/p/w92' + actor.profile_path" class="rounded-md" />
+            } @else {
+              <div class="w-full aspect-square rounded-md bg-[#1E1C24]"></div>
+            }
+            <p class="text-xs text-[#9B96A3] mt-1 truncate">{{ actor.name }}</p>
+          </div>
+        }
       </div>
     </div>
-  </div>
 
-  <p class="text-xs text-gray-400 mt-8">This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
-</div>
+    <p class="text-xs text-[#6E6A76] mt-10">This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+  </div>
+}
